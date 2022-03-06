@@ -1,7 +1,12 @@
-const loadBindingsWithPrebuilds = require("node-gyp-build");
-process.env.PREBUILDS_ONLY = "1";
+function loadBindingsWithPrebuilds(dir) {
+  const bindingsLoader = require("node-gyp-build");
+  //process.env.PREBUILDS_ONLY = "1";
+  const result = bindingsLoader(dir);
+  //delete process.env.PREBUILDS_ONLY;
+  return result;
+}
+
 const binding = loadBindingsWithPrebuilds(__dirname);
-delete process.env.PREBUILDS_ONLY;
 
 const util = require('util')
 const {Query, Parser, NodeMethods, Tree, TreeCursor} = binding;

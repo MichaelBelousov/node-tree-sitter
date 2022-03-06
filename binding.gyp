@@ -53,9 +53,7 @@
       "target_name": "tree_sitter_runtime_binding_napi",
       "dependencies": ["tree_sitter"],
       "sources": [
-        "src/binding.cpp",
-        # "src/parser.cpp",
-        # "src/query.cpp",
+        "napi-src/binding.cpp",
       ],
       "include_dirs": [
         "vendor/tree-sitter/lib/include",
