@@ -11,3 +11,4 @@ node_modules
 .vagrant
 package-lock.json
 prebuilds
+compile_commands.json

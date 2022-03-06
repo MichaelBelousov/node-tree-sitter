@@ -1,39 +1,40 @@
 {
   "targets": [
-    {
-      "target_name": "tree_sitter_runtime_binding",
-      "dependencies": ["tree_sitter"],
-      "sources": [
-        "src/binding.cc",
-        "src/conversions.cc",
-        "src/language.cc",
-        "src/logger.cc",
-        "src/node.cc",
-        "src/parser.cc",
-        "src/query.cc",
-        "src/tree.cc",
-        "src/tree_cursor.cc",
-        "src/util.cc",
-      ],
-      "include_dirs": [
-        "vendor/tree-sitter/lib/include",
-        "vendor/superstring",
-        "<!(node -e \"require('nan')\")",
-      ],
-      'conditions': [
-        ['OS == "mac"', {
-          'xcode_settings': {
-            'MACOSX_DEPLOYMENT_TARGET': '10.9',
-          },
-        }]
-      ],
-      "cflags": [
-        "-std=c++17",
-      ],
-      'xcode_settings': {
-        'CLANG_CXX_LANGUAGE_STANDARD': 'c++17',
-      },
-    },
+    # don't build nan target
+    # {
+    #   "target_name": "tree_sitter_runtime_binding",
+    #   "dependencies": ["tree_sitter"],
+    #   "sources": [
+    #     "src/binding.cc",
+    #     "src/conversions.cc",
+    #     "src/language.cc",
+    #     "src/logger.cc",
+    #     "src/node.cc",
+    #     "src/parser.cc",
+    #     "src/query.cc",
+    #     "src/tree.cc",
+    #     "src/tree_cursor.cc",
+    #     "src/util.cc",
+    #   ],
+    #   "include_dirs": [
+    #     "vendor/tree-sitter/lib/include",
+    #     "vendor/superstring",
+    #     "<!(node -e \"require('nan')\")",
+    #   ],
+    #   'conditions': [
+    #     ['OS == "mac"', {
+    #       'xcode_settings': {
+    #         'MACOSX_DEPLOYMENT_TARGET': '10.9',
+    #       },
+    #     }]
+    #   ],
+    #   "cflags": [
+    #     "-std=c++17",
+    #   ],
+    #   'xcode_settings': {
+    #     'CLANG_CXX_LANGUAGE_STANDARD': 'c++17',
+    #   },
+    # },
     {
       "target_name": "tree_sitter",
       'type': 'static_library',
@@ -47,6 +48,27 @@
       "cflags": [
         "-std=c99"
       ]
-    }
+    },
+    {
+      "target_name": "tree_sitter_runtime_binding_napi",
+      "dependencies": ["tree_sitter"],
+      "sources": [
+        "src/binding.cpp",
+        # "src/parser.cpp",
+        # "src/query.cpp",
+      ],
+      "include_dirs": [
+        "vendor/tree-sitter/lib/include",
+        """<!@(node -p "require('node-addon-api').include")""",
+      ],
+      "cflags": [
+        "-std=c++17",
+      ],
+      "cflags!": [ "-fno-exceptions" ],
+      "cflags_cc!": [ "-fno-exceptions" ],
+      "defines": [
+        "NAPI_CPP_EXCEPTIONS",
+      ],
+    },
   ],
 }

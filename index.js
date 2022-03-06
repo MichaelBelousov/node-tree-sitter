@@ -1,13 +1,7 @@
-let binding;
-try {
-  binding = require('./build/Release/tree_sitter_runtime_binding');
-} catch (e) {
-  try {
-    binding = require('./build/Debug/tree_sitter_runtime_binding');
-  } catch (_) {
-    throw e;
-  }
-}
+const loadBindingsWithPrebuilds = require("node-gyp-build");
+process.env.PREBUILDS_ONLY = "1";
+const binding = loadBindingsWithPrebuilds(__dirname);
+delete process.env.PREBUILDS_ONLY;
 
 const util = require('util')
 const {Query, Parser, NodeMethods, Tree, TreeCursor} = binding;
